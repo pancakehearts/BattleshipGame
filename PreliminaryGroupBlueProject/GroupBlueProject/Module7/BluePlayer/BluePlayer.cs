@@ -30,11 +30,18 @@ namespace Module8_GroupBlue
         // Propery that returns player's index in turn order.
         public int Index => _index;
 
-
-        // Logic to start new game
-        
+        /// <summary>
+        /// Logic to start new game
+        /// </summary>
+        /// <param name="playerIndex">Player's index in turn order.</param>
+        /// <param name="gridSize">Size of the grid.</param>
+        /// <param name="ships">Ships to be placed on grid.</param>
         public void StartNewGame(int playerIndex, int gridSize, Ships ships)
         {
+            //TODO: Intelligently place Ships.
+            //TODO: Reset ships between games.
+
+
             _gridSize = gridSize;
             _index = playerIndex;
 
@@ -62,8 +69,10 @@ namespace Module8_GroupBlue
             }
         }
 
-
-        // Method to intelligently find best spot to attack.
+        /// <summary>
+        /// Method to intelligently find best spot to attack.
+        /// </summary>
+        /// <returns>Position to be attacked.</returns>
         public Position GetAttackPosition()
         {
             Position guess = null;
@@ -83,16 +92,42 @@ namespace Module8_GroupBlue
             }
 
             // If guess is null by now, that means nothing has been found.
-            
+
             if (guess == null)
-                guess = new Position(0, 0); // ( This is a placeholder that just guesses 0, 0. )
+                //    guess = new Position(0, 0); // ( This is a placeholder that just guesses 0, 0. )
+                guess = GetRandomAttackPosition();
+
 
             return guess;
 
         }
 
-        // Method to find adjacent spot to a given position, if provided the direction.
-        // Returns null if the spot is somehow invalid (off the grid or has already been shot at)
+        /// <summary>
+        /// Chooses a random open square to attack on the grid.
+        /// </summary>
+        /// <returns>Random position to attack.</returns>
+        private Position GetRandomAttackPosition()
+        {
+            Position position = new Position(0, 0);
+            do
+            {
+                Random random = new Random();
+                position.X = random.Next(0, _gridSize);
+                position.Y = random.Next(0, _gridSize);
+            } while (!IsValid(position));
+
+            return position;
+        }
+
+
+        /// <summary>
+        /// Method to find adjacent spot to a given position, if provided the direction.
+        /// </summary>
+        /// <param name="p">Initial position being checked.</param>
+        /// <param name="direction">Direction of adjacent square in relation to
+        /// initial position.</param>
+        /// <returns>Returns null if the spot is somehow invalid
+        /// (off the grid or has already been shot at).</returns>
         internal Position GetAdjacent(Position p, char direction)
         {
             // initialize x & y
@@ -124,12 +159,20 @@ namespace Module8_GroupBlue
 
         }
 
-        // This method, given a position, checks if it is a valid spot at which to fire.
-        // Valid spots do not contain the player's own ships, have not already been shot at, and
-        // are on the grid.
+        /// <summary>
+        /// This method, given a position, checks if it is a valid spot at which to fire.
+        /// Valid spots do not contain the player's own ships, have not already been shot at, and
+        /// are on the grid.
+        /// </summary>
+        /// <param name="p">Position to be checked.</param>
+        /// <returns>True if position is valid and open to attack. Otherwise, false.</returns>
         internal bool IsValid(Position p)
         {
-            // Check to see if spot contains the AI's ship.
+            // TODO: Add code to check if spot is one of player's ships, but also check if those are the only available squares. 
+
+            /* Commented out to prevent infinite loop.
+            *   Check to see if spot contains the AI's ship.
+
             foreach (Ship s in _ships._ships)
             {
                 foreach (Position ShipPosition in s.Positions)
@@ -140,6 +183,7 @@ namespace Module8_GroupBlue
                     }
                 }
             }
+            */
 
             // Check to see if spot has already been shot at
             foreach (List<Position> LoggedPositions in new[] { HitPositions, MissPositions, SankPositions })
@@ -164,9 +208,13 @@ namespace Module8_GroupBlue
 
         }
 
-        // Method to log results throughout the game.
-        // BluePlayer will separately keep track of each guess that results in a hit or a miss.
-        // It does not track misses, as those require no follow up.
+        /// <summary>
+        /// Method to log results throughout the game.
+        /// BluePlayer will separately keep track of each guess that results in a hit or a miss.
+        /// It does not track misses, as those require no follow up.
+        /// </summary>
+        /// <param name="results">Results of the attack on all player boards
+        /// from the previous round.</param>
         public void SetAttackResults(List<AttackResult> results)
         {
             foreach (AttackResult r in results)

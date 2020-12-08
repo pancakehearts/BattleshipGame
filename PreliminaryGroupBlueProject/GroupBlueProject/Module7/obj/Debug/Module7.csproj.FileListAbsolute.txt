@@ -5,3 +5,10 @@ C:\Users\zephy\Downloads\PreliminaryGroupBlueProject\GroupBlueProject\Module7\ob
 C:\Users\zephy\Downloads\PreliminaryGroupBlueProject\GroupBlueProject\Module7\obj\Debug\Module7.csproj.CoreCompileInputs.cache
 C:\Users\zephy\Downloads\PreliminaryGroupBlueProject\GroupBlueProject\Module7\obj\Debug\Module7.exe
 C:\Users\zephy\Downloads\PreliminaryGroupBlueProject\GroupBlueProject\Module7\obj\Debug\Module7.pdb
+D:\Workspace\PreliminaryGroupBlueProject\GroupBlueProject\Module7\bin\Debug\Module7.exe.config
+D:\Workspace\PreliminaryGroupBlueProject\GroupBlueProject\Module7\bin\Debug\Module7.exe
+D:\Workspace\PreliminaryGroupBlueProject\GroupBlueProject\Module7\bin\Debug\Module7.pdb
+D:\Workspace\PreliminaryGroupBlueProject\GroupBlueProject\Module7\obj\Debug\Module7.csprojAssemblyReference.cache
+D:\Workspace\PreliminaryGroupBlueProject\GroupBlueProject\Module7\obj\Debug\Module7.csproj.CoreCompileInputs.cache
+D:\Workspace\PreliminaryGroupBlueProject\GroupBlueProject\Module7\obj\Debug\Module7.exe
+D:\Workspace\PreliminaryGroupBlueProject\GroupBlueProject\Module7\obj\Debug\Module7.pdb
