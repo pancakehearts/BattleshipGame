@@ -30,6 +30,28 @@ namespace Module8_GroupBlue
         // Propery that returns player's index in turn order.
         public int Index => _index;
 
+        // Property that stores the positions of the player's fleet.
+        private List<Position> ShipPositions
+        {
+            get
+            {
+                ShipPositions = new List<Position>();
+                foreach (Ship ship in _ships._ships)
+                {
+                    foreach (Position shipPosition in ship.Positions)
+                    {
+                        ShipPositions.Add(shipPosition);
+                    }
+                }
+                return ShipPositions;
+            }
+
+            set
+            {
+                ShipPositions = value;
+            }
+        }
+
         /// <summary>
         /// Logic to start new game
         /// </summary>
@@ -168,20 +190,26 @@ namespace Module8_GroupBlue
         /// <returns>True if position is valid and open to attack. Otherwise, false.</returns>
         internal bool IsValid(Position p)
         {
+            // Check to see if spot is on the grid
+            if (p.X < 0 || p.X >= _gridSize || p.Y < 0 || p.Y >= _gridSize)
+            {
+                return false;
+            }
 
-
-
-
-            // Check to see if spot has already been shot at
+            // Checks to see if position has already been attacked.
             if (HasBeenHit(p))
             {
                 return false;
             }
 
-            // Check to see if spot is on the grid
-            if (p.X < 0 || p.X >= _gridSize || p.Y < 0 || p.Y >= _gridSize)
+            // Checks to see if position contains player ship
+            if (ContainsMyShip(p))
             {
-                return false;
+                if (OpenPositionsRemain())
+                {
+                    return false;
+                }
+                
             }
 
             // If all the checks have passed, this spot is valid.
@@ -234,7 +262,27 @@ namespace Module8_GroupBlue
             return isPositionHit;
         }
 
-        
+        /// <summary>
+        /// Checks board if spaces remain that have not been hit and do not
+        /// contain our ships.
+        /// </summary>
+        /// <returns></returns>
+        internal bool OpenPositionsRemain()
+        {
+            for (int x = 0; x < _gridSize; x++)
+            {
+                for (int y = 0; y < _gridSize; y++)
+                {
+                    Position position = new Position(x, y);
+                    if (!HasBeenHit(position) && !ContainsMyShip(position))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Method to log results throughout the game.
