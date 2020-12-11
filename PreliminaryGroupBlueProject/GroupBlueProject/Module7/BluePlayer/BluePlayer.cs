@@ -13,7 +13,7 @@ namespace Module8_GroupBlue
         private List<Position> SankPositions = new List<Position>();   // stores all ‘sank’ guesses
         private int _index; // player's index in turn order
         private int _gridSize; // size of grid
-        private Ships _ships; // size of grid
+        private Ships _ships; // Player's ships
         private static readonly Random Random = new Random(); // used to randomize choices
         private char[] directions = { 'N', 'E', 'S', 'W' }; //represents north, east, south, west
 
@@ -168,33 +168,14 @@ namespace Module8_GroupBlue
         /// <returns>True if position is valid and open to attack. Otherwise, false.</returns>
         internal bool IsValid(Position p)
         {
-            // TODO: Add code to check if spot is one of player's ships, but also check if those are the only available squares. 
 
-            /* Commented out to prevent infinite loop.
-            *   Check to see if spot contains the AI's ship.
 
-            foreach (Ship s in _ships._ships)
-            {
-                foreach (Position ShipPosition in s.Positions)
-                {
-                    if (ShipPosition.X == p.X && ShipPosition.Y == p.Y)
-                    {
-                        return false;
-                    }
-                }
-            }
-            */
+
 
             // Check to see if spot has already been shot at
-            foreach (List<Position> LoggedPositions in new[] { HitPositions, MissPositions, SankPositions })
+            if (HasBeenHit(p))
             {
-                foreach (Position LoggedPosition in LoggedPositions)
-                {
-                    if (LoggedPosition.X == p.X && LoggedPosition.Y == p.Y)
-                    {
-                        return false;
-                    }
-                }
+                return false;
             }
 
             // Check to see if spot is on the grid
@@ -207,6 +188,53 @@ namespace Module8_GroupBlue
             return true;
 
         }
+
+        /// <summary>
+        /// Check to see if spot contains the AI's ship.
+        /// </summary>
+        /// <param name="p">Position on board to be checked.</param>
+        /// <returns>True if the position overlaps with one of the AI's
+        /// ships. Otherwise, false.</returns>
+        internal bool ContainsMyShip(Position position)
+        {
+            bool isMyShip = false;
+            foreach (Ship ship in _ships._ships)
+            {
+                foreach (Position ShipPosition in ship.Positions)
+                {
+                    if (ShipPosition.X == position.X && ShipPosition.Y == position.Y)
+                    {
+                        isMyShip = true;
+                    }
+                }
+            }
+
+            return isMyShip;
+        }
+
+        /// <summary>
+        /// Check to see if spot has already been attacked.
+        /// </summary>
+        /// <param name="position">Position to be checked.</param>
+        /// <returns>True if position has been attacked already. Otherwise, false.</returns>
+        internal bool HasBeenHit(Position position)
+        {
+            bool isPositionHit = false;
+            foreach (List<Position> LoggedPositions in new[] { HitPositions, MissPositions, SankPositions })
+            {
+                foreach (Position LoggedPosition in LoggedPositions)
+                {
+                    if (LoggedPosition.X == position.X && LoggedPosition.Y == position.Y)
+                    {
+                        isPositionHit = true;
+                    }
+                }
+            }
+
+            return isPositionHit;
+        }
+
+        
 
         /// <summary>
         /// Method to log results throughout the game.
