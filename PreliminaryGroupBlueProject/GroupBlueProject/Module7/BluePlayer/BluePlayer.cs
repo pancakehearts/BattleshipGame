@@ -1,4 +1,17 @@
-﻿using System;
+﻿/************************************************************************************
+ *                                                                                  *
+ *  Author:        Blue Group: Valerie Stephens, Stephen Peacock, Dustin Poulisse   *
+ *  Course:        CS3110 C# Programming                                            *
+ *  Assignment:    Module 8 Group Game Assignment                                   *
+ *  File:          BluePlayer.cs                                                    *
+ *  Description:   Multiplayer Battleship Game with AI                              *
+ *  Input:         None                                                             *
+ *  Output:        Game board with guesses                                          *
+ *  Created:       12/11/2020                                                       *
+ *                                                                                  *
+ ***********************************************************************************/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -72,22 +85,22 @@ namespace Module8_GroupBlue
             // Currently: this borrows from RandomPlayer, which just puts the ships in the grid in Random columns
             
 
-            var availableColumns = new List<int>();
+            var availableRows = new List<int>();
             for (int i = 0; i < gridSize; i++)
             {
-                availableColumns.Add(i);
+                availableRows.Add(i);
             }
 
             _ships = ships;
             foreach (var ship in ships._ships)
             {
-                // Pick an open X from the remaining columns
-                var x = availableColumns[Random.Next(availableColumns.Count)];
-                availableColumns.Remove(x); //Make sure we can't pick it again
+                // Pick an open y from the remaining rows
+                var y = availableRows[Random.Next(availableRows.Count)];
+                availableRows.Remove(y); //Make sure we can't pick it again
 
                 // Pick a Y that fits
-                var y = Random.Next(gridSize - ship.Length);
-                ship.Place(new Position(x, y), Direction.Vertical);
+                var x = Random.Next(gridSize - ship.Length);
+                ship.Place(new Position(x, y), Direction.Horizontal);
             }
         }
 
@@ -266,7 +279,8 @@ namespace Module8_GroupBlue
         /// Checks board if spaces remain that have not been hit and do not
         /// contain our ships.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>True if open spaces remain that have not been attacked
+        /// and do not contain the AI's ships. Otherwise, false.</returns>
         internal bool OpenPositionsRemain()
         {
             for (int x = 0; x < _gridSize; x++)
