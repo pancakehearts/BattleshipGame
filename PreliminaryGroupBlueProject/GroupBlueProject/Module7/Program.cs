@@ -38,10 +38,12 @@ namespace Module8_GroupBlue
             players.Add(new BluePlayer("Blue 2"));
             players.Add(new BluePlayer("Blue 3"));
 
-            
 
-            MultiPlayerBattleShip game = new MultiPlayerBattleShip(players);
-            game.Play(PlayMode.Pause);
+            for (int i = 0; i < 3; i++)
+            {
+                MultiPlayerBattleShip game = new MultiPlayerBattleShip(players);
+                game.Play(PlayMode.Pause);
+            }
         }
     }
 }

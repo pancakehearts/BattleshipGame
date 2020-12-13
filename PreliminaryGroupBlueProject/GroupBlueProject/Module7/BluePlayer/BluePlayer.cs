@@ -74,9 +74,10 @@ namespace Module8_GroupBlue
         public void StartNewGame(int playerIndex, int gridSize, Ships ships)
         {
             //TODO: Intelligently place Ships.
-            //TODO: Reset ships between games.
 
-
+            HitPositions = new List<Position>();
+            MissPositions = new List<Position>();
+            SankPositions = new List<Position>();
             _gridSize = gridSize;
             _index = playerIndex;
 
@@ -171,11 +172,11 @@ namespace Module8_GroupBlue
 
             // shift in the desired adjacent direction
             if (direction == 'N')
-                y++;
+                y--;
             else if (direction == 'E')
                 x++;
             else if (direction == 'S')
-                y--;
+                y++;
             else if (direction == 'W')
                 x--;
             else
